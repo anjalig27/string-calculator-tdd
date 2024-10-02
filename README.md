@@ -20,14 +20,10 @@ This is a simple String Calculator project built using JavaScript. It implements
    ```bash
    git clone https://github.com/anjalig27/string-calculator-tdd.git
    
-2. **Navigate to the project directory**:
-   ```bash
-   cd string-calculator-tdd
-
-3. **Install dependencies**:
+2. **Install dependencies**:
    ```bash
    npm install
 
-4. **Run the tests**:
+3. **Run the tests**:
    ```bash
    npm test
