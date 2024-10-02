@@ -17,3 +17,9 @@ test("should return the sum of two numbers separated by a comma", () => {
   const calculator = new StringCalculator();
   expect(calculator.add("1,2")).toBe(3);
 });
+
+// Enhanced the method to handle multiple numbers.
+test("should return the sum of multiple numbers separated by commas", () => {
+  const calculator = new StringCalculator();
+  expect(calculator.add("1,2,3,4")).toBe(10);
+});
