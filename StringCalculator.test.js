@@ -11,3 +11,9 @@ test("should return the number when only one number is provided", () => {
   const calculator = new StringCalculator();
   expect(calculator.add("1")).toBe(1);
 });
+
+// Implemented addition for two numbers.
+test("should return the sum of two numbers separated by a comma", () => {
+  const calculator = new StringCalculator();
+  expect(calculator.add("1,2")).toBe(3);
+});
