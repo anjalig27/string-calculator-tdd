@@ -23,3 +23,9 @@ test("should return the sum of multiple numbers separated by commas", () => {
   const calculator = new StringCalculator();
   expect(calculator.add("1,2,3,4")).toBe(10);
 });
+
+// Added support for new line as a delimiter.
+test("should handle new lines as delimiters", () => {
+  const calculator = new StringCalculator();
+  expect(calculator.add("1\n2,3")).toBe(6);
+});
