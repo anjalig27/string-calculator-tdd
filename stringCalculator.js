@@ -1,37 +1,62 @@
 class StringCalculator {
   add(numbers) {
     if (numbers === "") return 0;
-    let delimiter = /[\n,]/; // Default delimiters are new lines and commas
 
-    // Check for custom delimiter definition
+    const { delimiter, numberString } =
+      this._extractDelimitersAndNumbers(numbers);
+    const numArray = this._splitAndConvertNumbers(numberString, delimiter);
+
+    this._validateNumbers(numArray);
+
+    return this._calculateSum(numArray);
+  }
+
+  _extractDelimitersAndNumbers(numbers) {
+    let delimiter = /[\n,]/; // Default delimiters: new lines and commas
+    let numberString = numbers;
+
     if (numbers.startsWith("//")) {
       const parts = numbers.split("\n");
-      const delimiterPart = parts[0]; // This part will contain the custom delimiter(s)
-      // Check for multiple delimiters
-      if (delimiterPart.includes("[")) {
-        const regexDelimiters = delimiterPart
-          .match(/(?<=\[)[^\]]+(?=\])/g) // Extract delimiters from brackets
-          .map((d) => d.replace(/[-\/\\^$.*+?()[\]{}|]/g, "\\$&")) // Escape special regex characters
-          .join("|"); // Create regex pattern
-        delimiter = new RegExp(regexDelimiters); // Create regex for multiple delimiters
-      } else {
-        delimiter = new RegExp(`[${delimiterPart[2]}]`); // Handle single character delimiter
-      }
-      // Get the numbers part after the first line
-      numbers = parts.slice(1).join("\n");
+      const delimiterPart = parts[0];
+
+      delimiter = this._parseCustomDelimiters(delimiterPart);
+      numberString = parts.slice(1).join("\n");
     }
 
-    // Split the numbers based on the defined delimiter
-    const numArray = numbers.split(delimiter).map(Number);
+    return { delimiter, numberString };
+  }
 
-    // Handle negative numbers
+  _parseCustomDelimiters(delimiterPart) {
+    if (delimiterPart.includes("[")) {
+      const regexDelimiters = delimiterPart
+        .match(/(?<=\[)[^\]]+(?=\])/g) // Extract delimiters from brackets
+        .map(this._escapeSpecialCharacters) // Escape special regex characters
+        .join("|"); // Create regex pattern for multiple delimiters
+      return new RegExp(regexDelimiters);
+    } else {
+      return new RegExp(`[${this._escapeSpecialCharacters(delimiterPart[2])}]`);
+    }
+  }
+
+  _escapeSpecialCharacters(char) {
+    return char.replace(/[-\/\\^$.*+?()[\]{}|]/g, "\\$&");
+  }
+
+  _splitAndConvertNumbers(numberString, delimiter) {
+    return numberString.split(delimiter).map(Number);
+  }
+
+  _validateNumbers(numArray) {
     const negatives = numArray.filter((n) => n < 0);
     if (negatives.length > 0) {
       throw new Error(`Negative numbers not allowed: ${negatives.join(",")}`);
     }
+  }
 
-    // Sum the numbers, ignoring those greater than 1000
-    return numArray.filter((n) => n <= 1000).reduce((sum, num) => sum + num, 0);
+  _calculateSum(numArray) {
+    return numArray
+      .filter((n) => n <= 1000) // Ignore numbers greater than 1000
+      .reduce((sum, num) => sum + num, 0);
   }
 }
 
