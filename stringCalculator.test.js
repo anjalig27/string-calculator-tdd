@@ -35,3 +35,18 @@ test("should support custom delimiters", () => {
   const calculator = new StringCalculator();
   expect(calculator.add("//;\n1;2")).toBe(3);
 });
+
+// Implemented error handling for single negative number.
+test("should throw an error when negative numbers are provided", () => {
+  const calculator = new StringCalculator();
+  expect(() => calculator.add("1,-2")).toThrow(
+    "Negative numbers not allowed: -2"
+  );
+});
+// Enhanced error message for multiple negative numbers.
+test("should throw an exception with all negative numbers listed", () => {
+  const calculator = new StringCalculator();
+  expect(() => calculator.add("-2,-3")).toThrow(
+    "Negative numbers not allowed: -2,-3"
+  );
+});
